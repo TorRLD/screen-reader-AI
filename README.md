@@ -1,94 +1,145 @@
-# AI‑NVDA – Leitor de Tela Aprimorado com IA
+<!-- README.md - AI‑NVDA -->
 
-Uma alternativa leve ao NVDA que combina **APIs de acessibilidade** nativas, **visão computacional**, **OCR** e **modelos de linguagem** para identificar, descrever e navegar por elementos de interface em tempo real.
+<h1 align="center">
+  🦾🎙️ <strong>AI‑NVDA</strong><br>
+  <small>Leitor de Tela Aprimorado com IA</small>
+</h1>
 
-## Principais recursos
-| Categoria | Descrição resumida |
-|-----------|--------------------|
-| Acessibilidade nativa | Integra‑se às APIs do Windows, macOS e Linux (AT‑SPI) para obter foco, árvore de elementos e funções de automação |
-| Visão computacional | Detecta botões, campos, textos e ícones via OpenCV; aplica OCR otimizado *EasyOCR* para textos pequenos |
-| IA generativa | Usa **Phi‑3‑mini‑4k‑instruct** por padrão (8‑bit GPU ou CPU) e alterna para modelos menores se a memória for limitada |
-| TTS | Conversão texto‑para‑fala local com *pyttsx3*, seleção automática de voz em português se disponível |
-| Atalhos de teclado | Controle completo sem mouse (lista abaixo) |
-| Navegação estruturada | Cabeçalhos, links, regiões, formulários, tabelas |
-| Recuperação automática | Monitor de erros reinicia componentes de OCR, fala, modelo ou acessibilidade se necessário |
-| Perfis de apps | Otimizações para Facebook, Instagram, Gmail, Word, Chrome etc. |
+<p align="center">
+  <em>Uma alternativa leve ao NVDA que mescla APIs de acessibilidade nativas, visão computacional, OCR e LLMs para tornar qualquer interface verdadeiramente falável.</em>
+</p>
 
-## Estrutura de pastas
-```
+<p align="center">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/your-org/ai-nvda?style=for-the-badge">
+  <img alt="License MIT" src="https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge">
+  <img alt="Python" src="https://img.shields.io/badge/python-3.9%2B-yellow.svg?style=for-the-badge">
+</p>
+
+---
+
+## ✨ Principais Recursos
+
+| 🚀 Categoria | ⚡ Descrição |
+|--------------|-------------|
+| **Acessibilidade nativa** | Integra‑se às APIs do Windows (UIA), macOS (Quartz) e Linux (AT‑SPI) para obter foco, árvore de elementos e eventos de interface. |
+| **Visão computacional** | OpenCV + EasyOCR identificam botões, campos, itens de menu e texto em tempo real. |
+| **IA generativa** | **Phi‑3‑mini‑4k‑instruct** é carregado em 8‑bit (GPU ou CPU) e alterna para modelos menores se faltar memória. |
+| **TTS local** | *pyttsx3* seleciona automaticamente a melhor voz no idioma do sistema. |
+| **Atalhos de teclado** | Navegue sem mouse: Alt + Ctrl + →/←, Alt + Ctrl + C, etc. |
+| **Recuperação automática** | Monitor watchdog reinicializa módulos de OCR, TTS ou IA em caso de falha. |
+| **Perfis de apps** | Ajustes dedicados para Facebook, Gmail, Word, Chrome, VS Code e mais. |
+
+---
+
+## 📂 Estrutura de Pastas
+
+```text
 .
-├── models/              # Pesos adicionais de CV (ex.: cascades do OpenCV)
+├── models/              # Pesos adicionais (OpenCV, quantização etc.)
 ├── screen/              # Módulos auxiliares
 ├── screen-reader.py     # Arquivo principal
-├── ai_screen_reader.ini # Configurações geradas na primeira execução
+├── ai_screen_reader.ini # Config gerada na primeira execução
 └── ai_screen_reader.log # Log detalhado
 ```
 
-## Pré‑requisitos
-* Python ≥ 3.9 (64 bit recomendado)  
-* Acesso à internet para baixar modelos da Hugging Face na primeira execução  
-* Windows: **VC++ Redistributable 2015‑2022** (necessário para *pyttsx3* e *pywin32*)
+---
 
-## Instalação rápida
+## ⚙️ Pré‑requisitos
+
+* **Python ≥ 3.9 (64‑bit)**  
+* Internet para baixar modelos da Hugging Face¹ na primeira execução  
+* **Windows:** VC++ Redistributable 2015‑2022 (para *pyttsx3* / *pywin32*)
+
+> ¹ Cache local após o primeiro download — não é necessário conexão constante.
+
+---
+
+## 🚀 Instalação Rápida
+
 ```bash
-# 1) Crie e ative um ambiente virtual
+# Crie e ative um ambiente virtual
 python -m venv .venv
 # Windows
-.venv\\Scripts\\activate
+.venv\Scripts\activate
 # macOS / Linux
 source .venv/bin/activate
 
-# 2) Instale as dependências
+# Instale as dependências
 pip install -r requirements.txt
 ```
-> **Dica:** em máquinas sem GPU ou com \< 4 GB de RAM, edite `ai_screen_reader.ini` após a primeira execução e defina `use_lite_model = true` na seção `[ai]`.
 
-## Configuração inicial
-1. Gere um **Access Token** (*Read*) em <https://huggingface.co/settings/tokens>.  
-2. Abra `screen-reader.py` e substitua `login("")` pelo seu token.  
-3. Execute o leitor uma vez para que `ai_screen_reader.ini` seja criado com valores padrão personalizáveis.
+> 💡 **Dica:** em máquinas sem GPU ou com menos de 4 GB de RAM, execute uma vez para gerar `ai_screen_reader.ini` e então defina `use_lite_model = true` na seção `[ai]`.
 
-## Como executar
+---
+
+## 🔑 Configuração Inicial
+
+1. Gere um **Access Token (Read)** em <https://huggingface.co/settings/tokens>.  
+2. Abra `screen-reader.py` e substitua `login("")` pelo token.  
+3. Execute `python screen-reader.py` uma vez para gerar `ai_screen_reader.ini`.
+
+---
+
+## ▶️ Uso Básico
+
 ```bash
 python screen-reader.py
 ```
 
-Na inicialização você ouvirá: “Leitor de tela iniciado. Pressione Alt+Ctrl+P para pausar e Alt+Ctrl+Q para sair.”
+> Na inicialização você ouvirá:  
+> “Leitor de tela iniciado. Pressione **Alt + Ctrl + P** para pausar ou **Alt + Ctrl + Q** para sair.”
 
-### Atalhos principais
-| Combinação | Ação |
-|------------|------|
-| **Alt + Ctrl + P** | Pausar / retomar leitura |
-| **Alt + Ctrl + Q** | Encerrar o leitor |
-| **Alt + Ctrl + → / ←** | Próximo / anterior elemento |
-| **Alt + Ctrl + Espaço** | Ler elemento em foco |
-| **Alt + Ctrl + A** | Ler todos os elementos da tela |
-| **Alt + Ctrl + C** | Descrever elemento sob o cursor |
-| **Tab** | Foco nativo; leitor descreve o novo elemento |
-| **Navegação estruturada** | Alt + Ctrl + H (cabeçalhos), L (links), R (regiões), F (formulários), T (tabelas) |
+### ⌨️ Atalhos Essenciais
 
-## Personalização
-* **Modelos de IA** – altere `model_name` ou defina `use_lite_model` em `[ai]`.  
-* **Voz e velocidade** – ajuste `voice_id` e `rate` em `[speech]`.  
-* **Sensibilidade do OCR** – parâmetros em `[vision]`, por ex. `ocr_confidence`.  
-* **Earcons personalizados** – adicione WAVs em `sounds/` e mapeie no código.
+| Combinação                      | Ação |
+|---------------------------------|------|
+| Alt + Ctrl + P                  | Pausar / retomar leitura |
+| Alt + Ctrl + Q                  | Encerrar o leitor |
+| Alt + Ctrl + → / ←             | Próximo / anterior elemento |
+| Alt + Ctrl + Espaço             | Descrever elemento em foco |
+| Alt + Ctrl + A                  | Ler todos os elementos da tela |
+| Alt + Ctrl + C                  | Descrever elemento sob o cursor |
+| Tab                             | Segue foco do SO + leitura automática |
+| Navegação Estruturada           | **Alt + Ctrl +** H (Headers), L (Links), R (Regiões), F (Forms), T (Tables) |
 
-## Solução de problemas
-| Sintoma | Possível causa | Ação recomendada |
-|---------|----------------|------------------|
-| “Mecanismo de fala não disponível” | Falha ao iniciar *pyttsx3* | Instalar driver SAPI5 (Win) ou `espeak` (Linux) |
-| Modelo cai para CPU | Sem GPU ou pouca RAM | Definir `use_8bit = false` e/ou `use_lite_model = true` |
-| OCR não detecta botões pequenos | Resolução ou threshold baixo | Desativar `enhance_small_elements` e elevar `ocr_confidence` |
+---
 
-## Desenvolvimento & contribuição
-1. Faça fork e crie branches temáticos.  
-2. Siga *PEP 8* e documente o código.  
-3. Envie PR com descrição clara.  
-4. Ao alterar dependências, atualize `requirements.txt`.
+## 🛠️ Personalização
 
-## Licença
+| Arquivo | O que mudar |
+|---------|-------------|
+| `ai_screen_reader.ini` | Modelo, TTS, idioma, sensibilidade de OCR, earcons. |
+| `models/` | Substitua ou adicione checkpoints de visão / LLM. |
+
+---
+
+## 🚧 Problemas Conhecidos / Roadmap
+
+| Prioridade | Problema | Status |
+|------------|----------|--------|
+| 🔴 Alto | **Imprecisão no reconhecimento** de botões muito pequenos ou com baixo contraste. | Refinar pré‑processamento OCR; treinar cascades personalizados. |
+| 🔴 Alto | **Navegação com Tab** – alguns elementos focáveis não são anunciados, especialmente em apps Electron. | Mapear os eventos de foco via UIA/AT‑SPI; fallback por heurísticas visuais. |
+| 🟠 Médio | Latência perceptível ao alternar rapidamente entre janelas. | Implementar diff de framebuffer para reduzir OCR redundante. |
+| 🟠 Médio | Consumo de CPU acima de 30 % em telas dinâmicas (vídeos, animações). | Processamento por pipeline assíncrono + throttling adaptativo. |
+| 🟡 Baixo | Memória do modelo ainda alta (~2 GB) em CPUs antigas. | Explorar LoRA + quantização 4‑bit. |
+
+Acompanhe o progresso na aba **Issues** e sinta‑se convidado(a) a contribuir!
+
+---
+
+## 🤝 Contribuição
+
+1. **Fork** → **Branch** → **PR**.  
+2. Siga **PEP 8** e documente funções em português ou inglês consistente.  
+3. Inclua testes unitários para novas features.  
+4. Atualize `requirements.txt` se adicionar libs externas.
+
+---
+
+## 📜 Licença
+
 Distribuído sob a [MIT License](LICENSE).
 
 ---
 
-**Happy hacking & keep it accessible!**
+<p align="center"><em>Happy hacking & keep it accessible! 💙</em></p>
